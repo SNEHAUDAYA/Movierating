@@ -22,25 +22,30 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
-      
-          const { name, email, password } = form;
-      
-          if (!name || name.length < 3 || name.length > 30) {
-            toast.error("Name should be 3 to 30 characters.");
-          }
-      
-          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            toast.error("Email is invalid");
-          }
-      
-          if (!password || password.length < 6 || password.length > 25) {
-            toast.error("Password should be 6 to 25 characters.");
-          }
-      
-          console.log(form);
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/register`, form);
+      const { name, email, password } = form;
+
+      if (!name || name.length < 3 || name.length > 30) {
+        toast.error("Name should be 3 to 30 characters.");
+        return;
+      }
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        toast.error("Email is invalid");
+        return;
+      }
+
+      if (!password || password.length < 8 || password.length > 25) {
+        toast.error("Password should be 8 to 25 characters.");
+        return;
+      }
+
+      console.log(form);
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/auth/register`,
+        form
+      );
 
       toast.success("Registration succesfull Login now.");
       setTimeout(() => {

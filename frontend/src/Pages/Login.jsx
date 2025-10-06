@@ -1,15 +1,15 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
-import axios from 'axios';
-import './Login.css';
+import React, { useState, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
+import "./Login.css";
 
 export const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -19,14 +19,30 @@ export const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, formData);
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/auth/login`,
+        formData
+      );
+
+      // Store token in localStorage
+      localStorage.setItem("token", res.data.token);
+
+      // Optionally, store user info
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      // Update context (if you have one)
       login(res.data.token, res.data.user);
-      navigate('/');
+
+      // Navigate to home/dashboard
+      navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
+      setError(
+        err.response?.data?.message ||
+          "Login failed. Please check your credentials."
+      );
     }
   };
 
@@ -58,7 +74,9 @@ export const Login = () => {
               required
             />
           </div>
-          <button type="submit" className="submit-btn">Login</button>
+          <button type="submit" className="submit-btn">
+            Login
+          </button>
         </form>
         <p className="auth-link">
           Don't have an account? <Link to="/register">Sign Up</Link>

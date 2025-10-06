@@ -1,0 +1,31 @@
+.home-page {
+  min-height: calc(100vh - 200px);
+}
+
+.all-movies-btn-container {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.all-movies-btn {
+  display: inline-block;
+  background: #1e293b;
+  color: white;
+  padding: 12px 32px;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.all-movies-btn:hover {
+  background: #334155;
+}
+
+body.dark-theme .all-movies-btn {
+  background: #334155;
+}
+
+body.dark-theme .all-movies-btn:hover {
+  background: #475569;
+}

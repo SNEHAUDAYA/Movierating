@@ -1,21 +1,24 @@
 // src/pages/AdminDashboard.jsx
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './AdminDashboard.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./AdminDashboard.css";
+import { Link } from "react-router-dom";
 
 export const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchAdminStats = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/stats`);
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/admin/stats`
+        );
         setStats(res.data.data);
       } catch (err) {
-        console.error('Failed to load admin stats:', err);
-        setError('Unable to load dashboard data. Please try again later.');
+        console.error("Failed to load admin stats:", err);
+        setError("Unable to load dashboard data. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -67,6 +70,12 @@ export const AdminDashboard = () => {
           </div>
         </div>
 
+        <div className="admin-actions">
+          <Link to="/admin/add-movie" style={{backgroundColor: "#0EACF9", color: "white", padding:"5px 20px", width:"100%", margin:"20px"}} className="btn btn-primary">
+            Add Movie
+          </Link>
+        </div>
+
         {/* Recent Users */}
         <div className="recent-users-section">
           <h2>Recent Users</h2>
@@ -79,7 +88,7 @@ export const AdminDashboard = () => {
                     <span className="user-email">{user.email}</span>
                   </div>
                   <span className="user-role">
-                    {user.isAdmin ? 'Admin' : 'User'}
+                    {user.isAdmin ? "Admin" : "User"}
                   </span>
                 </div>
               ))
@@ -92,3 +101,5 @@ export const AdminDashboard = () => {
     </div>
   );
 };
+
+export default AdminDashboard;

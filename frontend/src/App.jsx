@@ -17,7 +17,8 @@ import { Home } from '../src/Pages/Home';
 import { MoviesPage } from '../src/Pages/MoviesPage';
 import { Login } from '../src/Pages/Login';
 import { Register } from '../src/Pages/Register';
-import { AdminDashboard } from './pages/AdminDashboard'; 
+import { AdminDashboard } from './pages/Admin/Dashboard/AdminDashboard'; 
+import AddMovieForm from './Pages/Admin/add-movie-form.jsx'; // <-- added import
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -64,13 +65,12 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/movies" element={<MoviesPage />} />
 
-           
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
 
-          
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/add-movie" element={<AddMovieForm />} /> {/* <-- new admin route */}
               </Route>
 
               <Route path="*" element={<Navigate to="/" replace />} />

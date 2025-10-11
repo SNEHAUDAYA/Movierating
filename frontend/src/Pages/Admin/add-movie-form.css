@@ -1,0 +1,121 @@
+/* Add Movie form styles */
+.add-movie-page {
+  padding: 32px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.add-movie-card {
+  width: 100%;
+  max-width: 980px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(20,20,40,0.06);
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.add-movie-header h2 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+.add-movie-header .muted {
+  margin: 0;
+  color: #666;
+  font-size: 13px;
+}
+
+/* grid layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 18px;
+  margin-top: 18px;
+}
+
+/* single-column rows (full width) */
+.form-field.full {
+  grid-column: 1 / -1;
+}
+
+/* field styling */
+.form-field label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #333;
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fafafa;
+  box-sizing: border-box;
+  transition: border-color .15s, box-shadow .15s;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: #6c8cff;
+  box-shadow: 0 0 0 4px rgba(108,140,255,0.08);
+  background: #fff;
+}
+
+/* error */
+.form-error {
+  margin-top: 12px;
+  color: #b00020;
+  background: #fff3f3;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(176,0,32,0.08);
+  font-size: 14px;
+}
+
+/* actions */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+/* buttons */
+.btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+}
+.btn-primary {
+  background: linear-gradient(180deg,#3b82f6,#2463db);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(37,78,255,0.12);
+}
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn-secondary {
+  background: #f4f6f8;
+  color: #222;
+  border: 1px solid #e6e9ef;
+}
+
+/* responsive */
+@media (max-width: 700px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+}

@@ -39,8 +39,14 @@ const MovieSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  actors: [String], 
+  actors: [String],
   language: String,
+
+  // added createdBy
+  createdBy: {
+    id: { type: String, default: null },
+    username: { type: String, default: "" }
+  },
 });
 
 module.exports = mongoose.model('Movie', MovieSchema);

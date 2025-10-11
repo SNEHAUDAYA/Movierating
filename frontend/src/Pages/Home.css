@@ -29,3 +29,11 @@ body.dark-theme .all-movies-btn {
 body.dark-theme .all-movies-btn:hover {
   background: #475569;
 }
+
+body.dark-theme .movie-name{
+  color: white;
+}
+
+body.dark-theme .movie-row-title{
+  color: white;
+}

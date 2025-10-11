@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { HeroSection } from '../components/HeroSection';
-import { MovieCarousel } from '../components/MovieCarousel';
+import MovieCarousel from '../components/MovieCarousel';
 import './Home.css';
 
 export const Home = () => {
@@ -26,11 +26,7 @@ export const Home = () => {
   return (
     <div className="home-page">
       <HeroSection movies={allMovies} />
-      
-      <MovieCarousel title="New Releases" movies={newMovies} />
-      <MovieCarousel title="Thriller Movies" movies={thrillerMovies} />
-      <MovieCarousel title="Action Movies" movies={actionMovies} />
-
+      <MovieCarousel />
       <div className="all-movies-btn-container">
         <a href="/movies" className="all-movies-btn">View All Movies</a>
       </div>

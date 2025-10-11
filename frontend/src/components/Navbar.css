@@ -1,3 +1,4 @@
+/* Base Navbar Styles - Already good */
 .navbar {
   background-color: #1e293b;
   color: white;
@@ -8,27 +9,44 @@
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
+/* Nav Container Adjustments: Crucial for layout */
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  /* Use 'gap' to ensure minimum spacing between main sections */
+  gap: 20px; 
   align-items: center;
   padding: 0 20px;
 }
 
+/* Logo and Main Links Grouping */
 .logo {
   font-size: 24px;
   font-weight: bold;
   color: #60a5fa;
+  /* Ensure the logo takes up minimal space */
+  flex-shrink: 0; 
 }
 
+/* ✅ NEW: Styles for the Home and Movies link container */
+.main-nav-links {
+  display: flex;
+  gap: 20px; /* Space between Home and Movies */
+  /* Allow the links to sit just after the logo and before the search form */
+  flex-shrink: 0;
+}
+/* ------------------------------------------ */
+
+/* Search Form: Allow it to grow and center it */
 .search-form {
   display: flex;
   gap: 8px;
-  flex: 1;
+  /* Flex-grow allows it to take up available space in the middle */
+  flex: 1; 
   max-width: 500px;
-  margin: 0 20px;
+  /* Removed margin: 0 20px; as nav-container gap handles this */
+  margin: 0; 
 }
 
 .search-input {
@@ -52,15 +70,20 @@
   background-color: #2563eb;
 }
 
+/* Nav Actions: User/Auth/Theme controls */
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 16px;
+  /* Ensure this group stays together and doesn't shrink */
+  flex-shrink: 0; 
 }
 
 .nav-link {
   color: #cbd5e1;
   font-weight: 500;
+  text-decoration: none; /* Ensure links don't have underlines */
+  transition: color 0.2s ease;
 }
 
 .nav-link:hover {
@@ -78,6 +101,11 @@
   padding: 4px 10px;
   border-radius: 4px;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #f871711a; /* Light red background on hover */
 }
 
 .theme-toggle {
@@ -92,7 +120,7 @@
   justify-content: center;
 }
 
-/* Dark theme adjustments */
+/* Dark theme adjustments - Already good */
 body.dark-theme .search-input {
   background-color: #334155;
   color: #f1f5f9;

@@ -40,6 +40,7 @@ const AdminRoute = () => {
   }
  
   if (!user || !user.isAdmin) {
+    console.log(user)
     return <Navigate to="/" replace />;
   }
 

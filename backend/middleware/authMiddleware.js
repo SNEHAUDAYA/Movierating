@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/user");
+const User = require("../models/User");
 
 exports.protect = async (req, res, next) => {
   try {
     // Get token from Authorization header or custom header
-    let token = req.headers.authorization?.split(' ')[1] || req.headers["x-access-token"];
+    let token =
+      req.headers.authorization?.split(" ")[1] || req.headers["x-access-token"];
 
     if (!token) {
       return res
@@ -29,7 +30,8 @@ exports.protect = async (req, res, next) => {
 // New middleware for optional authentication
 exports.optionalAuth = async (req, res, next) => {
   try {
-    let token = req.headers.authorization?.split(' ')[1] || req.headers["x-access-token"];
+    let token =
+      req.headers.authorization?.split(" ")[1] || req.headers["x-access-token"];
 
     if (!token) {
       req.user = null;

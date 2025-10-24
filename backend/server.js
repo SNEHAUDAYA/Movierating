@@ -25,9 +25,11 @@ app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/admin/movies', require('./routes/adminMovieRoutes'));// <-- add this line (after other app.use routes)
 
 const adminMovieRoutes = require('./routes/adminMovieRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 // place after other route mounts and before the error handler
 app.use('/api/admin/movies', adminMovieRoutes);
+app.use('/api/movies', reviewRoutes);
 
 const PORT = process.env.PORT || 5000;
 

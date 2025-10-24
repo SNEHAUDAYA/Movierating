@@ -13,7 +13,7 @@ export const AdminDashboard = () => {
     const fetchAdminStats = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/admin/stats`
+          `${import.meta.env.VITE_API_BASE_URL}/api/admin/stats`
         );
         setStats(res.data.data);
       } catch (err) {

@@ -42,7 +42,7 @@ export const AddMovieForm = () => {
         createdBy,
       };
 
-      const url = `${import.meta.env.VITE_API_BASE_URL}/admin/movies`;
+      const url = `${import.meta.env.VITE_API_BASE_URL}/api/admin/movies`;
       await axios.post(url, payload, {
         headers: {
           Authorization: token ? `Bearer ${token}` : undefined,

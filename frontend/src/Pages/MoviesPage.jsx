@@ -1,95 +1,78 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import './MoviesPage.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { MovieCard } from "../components/MovieCard";
 
 export const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState([]);
-  const [actors, setActors] = useState([]); // You'll need to add `actors: [String]` to your Movie model
-  const [languages, setLanguages] = useState(['English', 'Hindi', 'Spanish']);
-  const [selectedActor, setSelectedActor] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState("");
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/movies`);
-        const movieList = res.data.movies || [];
-        setMovies(movieList);
-        setFilteredMovies(movieList);
-
-        const allActors = [...new Set(movieList.flatMap(m => m.actors || []))];
-        setActors(allActors);
-      } catch (err) {
-        console.error('Failed to load movies');
-      }
-    };
     fetchMovies();
-  }, []);
+  }, [searchTerm, selectedGenre]);
 
-  useEffect(() => {
-    let result = movies;
-    if (selectedActor) {
-      result = result.filter(movie => movie.actors?.includes(selectedActor));
+  const fetchMovies = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      let url = `http://localhost:5000/api/movies`;
+
+      // Add query parameters if search or genre filters are applied
+      const params = new URLSearchParams();
+      if (searchTerm) params.append("search", searchTerm);
+      if (selectedGenre) params.append("genre", selectedGenre);
+      if (params.toString()) url += `?${params.toString()}`;
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setMovies(response.data.data);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
     }
-    if (selectedLanguage) {
-      result = result.filter(movie => movie.language === selectedLanguage);
-    }
-    setFilteredMovies(result);
-  }, [selectedActor, selectedLanguage, movies]);
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="movies-page">
-      <div className="movies-container">
-        <aside className="filters-sidebar">
-          <h3>Filters</h3>
-          
-          <div className="filter-group">
-            <label>Actor</label>
-            <select
-              value={selectedActor}
-              onChange={(e) => setSelectedActor(e.target.value)}
-              className="filter-select"
-            >
-              <option value="">All Actors</option>
-              {actors.map(actor => (
-                <option key={actor} value={actor}>{actor}</option>
-              ))}
-            </select>
-          </div>
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search movies..."
+          className="p-2 border rounded mr-4"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <select
+          value={selectedGenre}
+          onChange={(e) => setSelectedGenre(e.target.value)}
+          className="p-2 border rounded"
+        >
+          <option value="">All Genres</option>
+          <option value="Action">Action</option>
+          <option value="Comedy">Comedy</option>
+          <option value="Drama">Drama</option>
+          <option value="Horror">Horror</option>
+          <option value="Sci-Fi">Sci-Fi</option>
+          <option value="Romance">Romance</option>
+          <option value="Thriller">Thriller</option>
+          <option value="Animation">Animation</option>
+          <option value="Documentary">Documentary</option>
+        </select>
+      </div>
 
-          <div className="filter-group">
-            <label>Language</label>
-            <select
-              value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value)}
-              className="filter-select"
-            >
-              <option value="">All Languages</option>
-              {languages.map(lang => (
-                <option key={lang} value={lang}>{lang}</option>
-              ))}
-            </select>
-          </div>
-        </aside>
-
-        <main className="movies-grid">
-          {filteredMovies.length === 0 ? (
-            <p>No movies found.</p>
-          ) : (
-            filteredMovies.map(movie => (
-              <div key={movie._id} className="movie-item">
-                {movie.imageUrl && <img src={movie.imageUrl} alt={movie.title} className="movie-img" />}
-                <div className="movie-details">
-                  <h3>{movie.title}</h3>
-                  <p>{movie.genre} • {movie.releaseYear}</p>
-                  <Link to={`/movies/${movie._id}`} className="review-btn">Review</Link>
-                </div>
-              </div>
-            ))
-          )}
-        </main>
+      <div className="movie-grid">
+        {movies.map((movie) => (
+          <MovieCard key={movie._id} movie={movie} />
+        ))}
       </div>
     </div>
   );

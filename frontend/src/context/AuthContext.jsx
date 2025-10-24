@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     } else if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/me`)
+      axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/auth/me`)
         .then(res => {
           setUser(res.data.user);
           localStorage.setItem('user', JSON.stringify(res.data.user));

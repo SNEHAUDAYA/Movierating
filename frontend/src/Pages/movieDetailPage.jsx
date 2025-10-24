@@ -1,36 +1,79 @@
-import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 import "./MovieDetail.css";
 
 export const MovieDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const [movie, setMovie] = useState(null);
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [newReview, setNewReview] = useState({ rating: 5, comment: "" });
+  const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
-    const fetchMovie = async () => {
+    const fetchMovieAndReviews = async () => {
       setLoading(true);
       setError("");
       try {
-        const token =
-          localStorage.getItem("token") || localStorage.getItem("authToken");
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const url = `${import.meta.env.VITE_API_BASE_URL}/movies/${id}`;
-        const res = await axios.get(url, { headers });
-        const data = res.data?.data || res.data?.movie || res.data;
-        setMovie(data);
-      } catch (err) {
-        setError(
-          err?.response?.data?.message || err?.message || "Failed to load movie"
+        const token = localStorage.getItem("token");
+        const headers = { Authorization: `Bearer ${token}` };
+
+        // Updated URLs to include /api prefix
+        const movieRes = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/movies/${id}`,
+          { headers }
         );
+        setMovie(movieRes.data.data);
+
+        const reviewsRes = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/movies/${id}/reviews`,
+          { headers }
+        );
+        setReviews(reviewsRes.data.data);
+      } catch (err) {
+        setError(err?.response?.data?.message || "Failed to load data");
       } finally {
         setLoading(false);
       }
     };
-    fetchMovie();
+    fetchMovieAndReviews();
   }, [id]);
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/movies/${id}/reviews`,
+        newReview,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      // Update reviews list and movie rating
+      setReviews([...reviews, response.data.data]);
+      setMovie((prev) => ({
+        ...prev,
+        averageRating: response.data.averageRating,
+        totalReviews: response.data.totalReviews,
+      }));
+      setNewReview({ rating: 5, comment: "" });
+      setSubmitError("");
+    } catch (err) {
+      setSubmitError(err?.response?.data?.message || "Failed to submit review");
+    }
+  };
 
   if (loading) return <div className="md-loading">Loading...</div>;
   if (error) return <div className="md-error">{error}</div>;
@@ -96,10 +139,83 @@ export const MovieDetail = () => {
             <Link to="/movies" className="md-btn md-btn--muted">
               Back to list
             </Link>
-            <Link to={`/movies/${id}`} className="md-btn">
-              Refresh
-            </Link>
           </div>
+        </div>
+      </div>
+
+      {/* Reviews Section */}
+      <div className="reviews-section">
+        <h2>Reviews</h2>
+
+        {user ? (
+          <form onSubmit={handleSubmitReview} className="review-form">
+            <div className="rating-input">
+              <label>Rating:</label>
+              <select
+                value={newReview.rating}
+                onChange={(e) =>
+                  setNewReview((prev) => ({
+                    ...prev,
+                    rating: Number(e.target.value),
+                  }))
+                }
+              >
+                {[5, 4, 3, 2, 1].map((num) => (
+                  <option key={num} value={num}>
+                    {num} stars
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="comment-input">
+              <label>Your Review:</label>
+              <textarea
+                value={newReview.comment}
+                onChange={(e) =>
+                  setNewReview((prev) => ({
+                    ...prev,
+                    comment: e.target.value,
+                  }))
+                }
+                required
+                minLength={10}
+                placeholder="Write your review here (minimum 10 characters)"
+              />
+            </div>
+
+            {submitError && (
+              <div className="error-message">{submitError}</div>
+            )}
+
+            <button type="submit" className="submit-review-btn">
+              Submit Review
+            </button>
+          </form>
+        ) : (
+          <div className="login-prompt">
+            <Link to="/login">Login to write a review</Link>
+          </div>
+        )}
+
+        <div className="reviews-list">
+          {reviews.map((review) => (
+            <div key={review._id} className="review-item">
+              <div className="review-header">
+                <div className="stars">
+                  {"★".repeat(review.rating)}
+                  {"☆".repeat(5 - review.rating)}
+                </div>
+                <span className="review-date">
+                  {new Date(review.createdAt).toLocaleDateString()}
+                </span>
+              </div>
+              <p className="review-comment">{review.comment}</p>
+              <div className="review-author">
+                By: {review.user.username || "Anonymous"}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

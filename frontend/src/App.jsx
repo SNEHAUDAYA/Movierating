@@ -19,6 +19,7 @@ import { Login } from '../src/Pages/Login';
 import { Register } from '../src/Pages/Register';
 import { AdminDashboard } from './pages/Admin/Dashboard/AdminDashboard'; 
 import AddMovieForm from './Pages/Admin/add-movie-form.jsx'; // <-- added import
+import { MovieDetail } from '../src/Pages/movieDetailPage';
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -72,6 +73,12 @@ export default function App() {
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/add-movie" element={<AddMovieForm />} /> {/* <-- new admin route */}
               </Route>
+
+              <Route path="/movie/:id" element={
+                <ProtectedRoute>
+                  <MovieDetail />
+                </ProtectedRoute>
+              } />
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

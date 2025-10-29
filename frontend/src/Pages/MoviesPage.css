@@ -124,7 +124,6 @@ body.dark-theme .movie-item {
 }
 
 .movie-card {
-  background: #fff;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -181,4 +180,11 @@ body.dark-theme .movie-item {
 
 .reviews {
   font-size: 0.875rem;
+}
+
+
+.movies-listing-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
 }

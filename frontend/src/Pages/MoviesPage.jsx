@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { MovieCard } from "../components/MovieCard";
+import "./MoviesPage.css";
+
 
 export const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
@@ -16,7 +18,7 @@ export const MoviesPage = () => {
   const fetchMovies = async () => {
     try {
       const token = localStorage.getItem("token");
-      let url = `http://localhost:5000/api/movies`;
+      let url = `http://localhost:8080/api/movies`;
 
       // Add query parameters if search or genre filters are applied
       const params = new URLSearchParams();
@@ -42,19 +44,19 @@ export const MoviesPage = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
+    <div className="container! mx-auto! px-4! py-8!">
+      <div className="mb-6!">
         <input
           type="text"
           placeholder="Search movies..."
-          className="p-2 border rounded mr-4"
+          className="p-2! border! rounded! mr-4!"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <select
           value={selectedGenre}
           onChange={(e) => setSelectedGenre(e.target.value)}
-          className="p-2 border rounded"
+          className="p-2! border! rounded!"
         >
           <option value="">All Genres</option>
           <option value="Action">Action</option>
@@ -69,7 +71,7 @@ export const MoviesPage = () => {
         </select>
       </div>
 
-      <div className="movie-grid">
+      <div className="movies-listing-grid">
         {movies.map((movie) => (
           <MovieCard key={movie._id} movie={movie} />
         ))}

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { HeroSection } from "../components/HeroSection";
-import MovieCarousel from "../components/MovieCarousel";
 import "./Home.css";
 
 export const Home = () => {

@@ -26,7 +26,7 @@ export const Navbar = () => {
 
     return (
         <nav className="navbar">
-            <div className="nav-container">
+            <div className="nav-container justify-between!">
                 <Link to="/" className="logo">MovieReview</Link>
 
                 {/* ✅ ADDED HOME AND MOVIES LINKS HERE */}
@@ -35,17 +35,6 @@ export const Navbar = () => {
                     <Link to="/movies" className="nav-link">Movies</Link>
                 </div>
                 {/* ---------------------------------- */}
-
-                <form onSubmit={handleSearch} className="search-form">
-                    <input
-                        type="text"
-                        placeholder="Search by movie title or actor..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="search-input"
-                    />
-                    <button type="submit" className="search-button">Search</button>
-                </form>
 
                 <div className="nav-actions">
                     {user ? (

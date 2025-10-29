@@ -35,7 +35,7 @@ export const HeroSection = ({ movies }) => {
           <span>★ {movie.averageRating.toFixed(1)}</span>
           <p className="hero-year">{movie.year}</p>
           <span className="reviews mx-2!">({movie.totalReviews} reviews)</span>
-          <Link to={`/movies/${movie.id}`} className="review-btn">
+          <Link to={`/movie/${movie._id}`} className="review-btn">
             Review
           </Link>
         </div>

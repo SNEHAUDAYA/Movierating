@@ -212,7 +212,7 @@ export const MovieDetail = () => {
               </div>
               <p className="review-comment">{review.comment}</p>
               <div className="review-author">
-                By: {review.user.username || "Anonymous"}
+                By: {review?.user?.username || "Anonymous"}
               </div>
             </div>
           ))}
